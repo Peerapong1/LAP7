@@ -23,12 +23,15 @@ public class ArraysAndExceptions {
 
 			System.out.print("Enter an index:\n>> ");
 			String indexStr = Keyboard.readInput();
-
-			index = getArrayIndex(indexStr);
-			needInput = false;
-
+			
+			try {
+				index = getArrayIndex(indexStr);
+				needInput = false;
+			}catch(IndexTooLowException| IndexTooHighException| InvalidIndexException e) {
+				System.out.println(e.getMessage());
+				//e.printStackTrace();
+			}
 		}
-
 		System.out.println("The element at index " + index + " is: " + myArray[index]);
 	}
 
@@ -55,18 +58,24 @@ public class ArraysAndExceptions {
 	 * </ol>
 	 */
 
-	public int getArrayIndex(String indexStr) {
+	public int getArrayIndex(String indexStr)throws IndexTooLowException,IndexTooHighException,InvalidIndexException{
 
 		try {
 			int index = Integer.parseInt(indexStr);
 			// TODO: check index value and return proper exception
-
+			if (index<0) {
+				throw new IndexTooLowException("Error: Index too low!");
+			}	
+			if(index<4) {
+				throw new IndexTooHighException("Error: Index high!");
+			}
 			return index;
 
 		} catch (NumberFormatException e) {
 
 			// TODO: remove below return, throw the proper exception
-			return 0;
+			throw new InvalidIndexException("Invalid Index");
+			
 		}
 
 	}
